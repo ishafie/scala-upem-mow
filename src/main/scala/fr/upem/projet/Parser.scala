@@ -1,5 +1,8 @@
 package fr.upem.projet
+import scala.io.Source
 
-class Parser {
 
+
+object Parser {
+  
 }
