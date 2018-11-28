@@ -1,4 +1,5 @@
-i'm a test
-i'm a test2
-i'm a test3
-i'm a test4
+5 5
+1 2 N
+GAGAGAGAA
+3 3 E
+AADAADADDA
