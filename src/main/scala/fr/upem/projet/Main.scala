@@ -1,6 +1,6 @@
 package fr.upem.projet
 
-final case class Robot(coordinates: Coordinates, commands: Commands)
+import Parser._;
 
 
 object Main extends App {
