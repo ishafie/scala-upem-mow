@@ -18,6 +18,7 @@ object Parser {
 
     val coords = firstline.split(" ").toList
     val commands = secondline.split(" ").toList
+    println(coords)
     println(commands)
     // A TRANSFORMER EN CASE CLASS TOUS LES IF
     if (coords.length != 3) {
@@ -28,7 +29,7 @@ object Parser {
       println("Mauvais fichier")
       return null;
     }
-    Robot.startRobot(commands, coords, area)
+    Robot.startRobot(commands.head.toList, coords, area)
     area.displayMap(area.areaTab)
     parse_all_lines(bufferedReader, bufferedReader.readLine(), area)
   }
@@ -42,7 +43,7 @@ object Parser {
     val coords = Coordinates.Point(coordArray(0).toInt, coordArray(1).toInt)
     /*println("MY HEIGHT: " + coordinates.y)
     println("MY WIDTH: " + coordinates.x)*/
-    val area = new Area{val areaTab = Array.ofDim[String](coords.y, coords.x)
+    val area = new Area{val areaTab: Array[Array[String]] = Array.ofDim[String](coords.y, coords.x)
       val coordinates: Coordinates.Point = coords
     }
     area.initMap(coords, area.areaTab)

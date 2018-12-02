@@ -1,16 +1,27 @@
 package fr.upem.projet
 
+import fr.upem.projet.Coordinates.Orientation
 
 trait Robot {
-  def startRobot(commands: List[String], coords: List[String], area: Area)
+  def startRobot(commands: List[Char], coords: List[String], area: Area)
 }
 
 object Robot {
-  def startRobot(commands: List[String], coords: List[String], area: Area): Unit = {
-    area.areaTab((area.coordinates.y - 1) - coords.head.toInt)(coords(1).toInt) = "O"
-    /*Coordinates.Orientation.move(coords(3), commands)
-    case Orientation("G") case "N" "W"
-    ("A")
-    ("D")*/
+  def executeCommands(area: Area, commands: List[Char], orientation: String, position: Coordinates.Point): String = commands match {
+    case x :: xs if x equals 'A' => executeCommands(area, xs, orientation, area.advance(area, Orientation(orientation), position))
+    case x :: xs => {
+      println("-----\nCommand: " + x + ", Orientation: " + orientation)
+      Coordinates.print(position)
+      println("----")
+      executeCommands(area, xs, Coordinates.move(Orientation(orientation))(x), position)
+    }
+    case Nil => "x: " + position.x + ", y: " + ((area.coordinates.y - 1) - position.y) + " (" + orientation + ")"
+  }
+
+  def startRobot(commands: List[Char], coords: List[String], area: Area): Unit = {
+    val point = Coordinates.Point(coords.head.toInt, (area.coordinates.y - 1) - coords(1).toInt)
+    area.areaTab(point.y)(point.x) = "O"
+    Coordinates.print(point)
+    println(executeCommands(area, commands, coords(2), point))
   }
 }
