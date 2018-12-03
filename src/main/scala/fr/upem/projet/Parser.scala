@@ -8,47 +8,53 @@ trait Parser {
 
 
 object Parser {
+  case class DoubleList(firstline: List[String], secondline: List[String])
+  case class DoubleLine(firstline: String, secondline: String)
 
-  def parse_all_lines(bufferedReader: BufferedReader, firstline: String, area: Area): String = {
-    if (firstline == null)
-      return firstline
-    val secondline = bufferedReader.readLine()
-    if (secondline == null)
-      return secondline
+  val verifyCoords: List[String] => Boolean = {
+    case x :: Nil if x.matches("[SNEO]$") => verifyCoords(Nil)
+    case x :: Nil => false
+    case x :: xs if x.matches("[0-9]$") => verifyCoords(xs)
+    case Nil => true
+    case _ => false
+  }
 
-    val coords = firstline.split(" ").toList
-    val commands = secondline.split(" ").toList
-    println(coords)
-    println(commands)
-    // A TRANSFORMER EN CASE CLASS TOUS LES IF
-    if (coords.length != 3) {
-      println("Mauvais fichier")
-      return null
+  val verify: DoubleList => Boolean = {
+    case DoubleList(null, _) => false
+    case DoubleList(_, null) => false
+    case DoubleList(a, b) if a.length != 3 || b.length != 1 || !b.head.matches("[GDA]*$") || !verifyCoords(a) => false
+    case DoubleList(_, _) => true
+  }
+
+  def parse_all_lines(bufferedReader: BufferedReader, doubleline: DoubleLine, area: Area): String = {
+    doubleline match {
+      case DoubleLine(null, _) => null
+      case DoubleLine(_, null) => null
+      case DoubleLine(firstline, secondline) if verify(DoubleList(firstline.split(" ").toList, secondline.split(" ").toList)) => {
+        Robot.startRobot(secondline.split(" ").toList.head.toList, firstline.split(" ").toList, area)
+        area.displayMap(area.areaTab)
+        parse_all_lines(bufferedReader, DoubleLine(bufferedReader.readLine(), bufferedReader.readLine()), area)
+      }
+      case DoubleLine(_, _) => null
     }
-    if (commands.length != 1 || !commands.head.matches("[GDA]*$")) {
-      println("Mauvais fichier")
-      return null;
-    }
-    Robot.startRobot(commands.head.toList, coords, area)
-    area.displayMap(area.areaTab)
-    parse_all_lines(bufferedReader, bufferedReader.readLine(), area)
   }
 
   def parser(bufferedReader: BufferedReader, line: String): String = {
-    //println("ATTENTION FIRST LINE : " + line + "| " + line.length)
-    if (line.length != 3) {
-      "Mauvais fichier"
+    //A MODIFIER EN MIEUX
+    if (line == null) {
+      return "Mauvais fichier"
     }
     val coordArray = line split " "
+    if (coordArray.length != 2 || !coordArray.head.matches("[1-9]+$") || !coordArray(1).matches("[1-9]+$")) {
+      return "Mauvais fichier"
+    }
     val coords = Coordinates.Point(coordArray(0).toInt, coordArray(1).toInt)
-    /*println("MY HEIGHT: " + coordinates.y)
-    println("MY WIDTH: " + coordinates.x)*/
     val area = new Area{val areaTab: Array[Array[String]] = Array.ofDim[String](coords.y, coords.x)
       val coordinates: Coordinates.Point = coords
     }
     area.initMap(coords, area.areaTab)
     area.displayMap(area.areaTab)
-    parse_all_lines(bufferedReader, bufferedReader.readLine(), area)
+    parse_all_lines(bufferedReader, DoubleLine(bufferedReader.readLine(), bufferedReader.readLine()), area)
   }
 
   def openFile(fileName: String) : Option[BufferedReader] = {

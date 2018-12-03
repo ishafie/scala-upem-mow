@@ -10,9 +10,9 @@ object Main extends App {
     val bufferedReader = Parser.openFile("test.txt")
     if (bufferedReader.isEmpty) {
       println("not found")
-      return;
+    } else {
+      Parser.parser(bufferedReader.get, bufferedReader.get.readLine)
     }
-    Parser.parser(bufferedReader.get, bufferedReader.get.readLine)
 
   }
 }
