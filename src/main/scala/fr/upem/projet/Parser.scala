@@ -11,10 +11,8 @@ trait Parser {
 }
 object Implicits {
 
-  implicit class SafeBufferedReader(val s: BufferedReader) extends Reader {
+  implicit class SafeBufferedReader(val s: BufferedReader) {
     def safeReadLine: Option[String] = Option(s.readLine())
-    override def read(cbuf: Array[Char], off: Int, len: Int): Int = read(cbuf, off, len)
-    override def close(): Unit = close()
   }
 
 }
@@ -70,7 +68,6 @@ object Parser {
   }
 
   def openFile(fileName: String) : Option[BufferedReader] = {
-    // Try class
     val reader = Try(Option(new BufferedReader(new FileReader(fileName))))
     reader match {
       case Success(v) => Success(v).value
