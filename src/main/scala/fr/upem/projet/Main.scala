@@ -11,7 +11,8 @@ object Main extends App {
     if (bufferedReader.isEmpty) {
       println("not found")
     } else {
-      Parser.parser(bufferedReader.get, bufferedReader.get.readLine)
+      val line = bufferedReader.get.readLine
+      if (line != null) Parser.parser(bufferedReader.get, line.split(" ")) else println("Mauvais fichier")
     }
 
   }
