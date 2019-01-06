@@ -16,7 +16,7 @@ trait Area {
   val checkPosition: Int => Int => Int => Int => Boolean = x => y => maxwidth => maxheight => {
     x < maxwidth && y < maxheight && x >= 0 && y >= 0
   }
-  
+
   def advance(area: Area, orientation: Orientation, position: Coordinates.Point): Coordinates.Point = orientation match {
     case Orientation("O") if checkPosition(position.x - 1)(position.y)(area.coordinates.x)(area.coordinates.y) =>
       setAndRetCoordinates(area, position.x - 1, position.y)

@@ -14,6 +14,7 @@ object Coordinates {
   implicit val pointShow: Show[Coordinates.Point] = (point: Coordinates.Point) => "x: " + point.x + ", y: " + point.y
 
   val move: Orientation => Char => String = orientation => c => orientation match {
+      //should use enum
     case Orientation("O") if c.equals('G') => "S"
     case Orientation("O") if c.equals('D') => "N"
     case Orientation("N") if c.equals('G') => "O"

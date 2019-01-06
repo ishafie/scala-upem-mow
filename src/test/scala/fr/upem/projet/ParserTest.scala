@@ -38,9 +38,4 @@ class ParserTest extends FlatSpec with Matchers with GeneratorDrivenPropertyChec
     bufferReader should not be empty
   }
 
-  /*"parseAllLines" should "return 'Mauvais Fichier' or the good coordinates" in {
-    ???
-  }*/
-
-  //orientation avec enum
 }
