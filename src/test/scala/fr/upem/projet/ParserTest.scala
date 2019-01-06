@@ -34,7 +34,7 @@ class ParserTest extends FlatSpec with Matchers with GeneratorDrivenPropertyChec
   }
 
   "openFile" should "return an error if the file doesnt exist" in {
-    val bufferReader = Parser.openFile("test.txt")
+    val bufferReader = Parser.openFile("donttouch.txt")
     bufferReader should not be empty
   }
 
