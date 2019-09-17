@@ -1,5 +1,4 @@
-# PROJET SCALA 2018-2019
-### Par SHAFIE Ichem - M2 Logiciel (Apprenti)
+# SCALA MOWING SIMULATOR TEST
 
 ## Installation
 
